@@ -1,37 +1,35 @@
 from python_get_resolve import GetResolve
 
 from init_project import create_timeline
+from process_timeline_items import process_timeline
 from tennis_score import TennisScore
 
 def update_score(markerValue):
     print tennisScore.get_match_score()
     print '  ', markerValue
 
-    if markerValue['color'] == MY_PT:
+    if markerValue['color'] == END_MY_PT:
         print 'My point'
         tennisScore.update_game_score(FELIX, OPP)
-    elif markerValue['color'] == OPP_PT:
+    elif markerValue['color'] == END_OPP_PT:
         print 'His point'
         tennisScore.update_game_score(OPP, FELIX)
 
-
-MY_PT = 'Blue'
-OPP_PT = 'Cyan'
-FELIX = 'felix'
-OPP = 'opponent'
+ROOT_MEDIA_FOLDER = "C:\\Users\\Felix\\Pictures\\GoPro\\2021-04-10_OneHandBH\\HERO5 Black 1"
 
 tennisScore = TennisScore()
 
-
-
 resolve = app.GetResolve()
 resolve.OpenPage("edit")
+
+mediaStorage = resolve.GetMediaStorage()
+print mediaStorage.GetMountedVolumeList()
 
 projectManager = resolve.GetProjectManager()
 project = projectManager.GetCurrentProject()
 mediaPool = project.GetMediaPool()
 
-create_timeline(resolve)
+# create_timeline(resolve)
 
 
 # TODO How to load a LUT in fusion
@@ -40,6 +38,12 @@ create_timeline(resolve)
 # timeLineVideos = timeline.GetItemListInTrack('video', 1)
 # for timelineItem in timeLineVideos:
 #     print timelineItem.GetName()
+
+
+# Trim unwanted parts of videos
+timeline = project.GetCurrentTimeline()
+process_timeline(ROOT_MEDIA_FOLDER, timeline)
+
 
 # Tally Score via markers
 # Dark Blue I win point
