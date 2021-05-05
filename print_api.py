@@ -15,6 +15,9 @@ print_obj('Project Manager', pm)
 project = pm.GetCurrentProject()
 print_obj('Project', project)
 
+mp = project.GetMediaPool()
+print_obj('Media Pool', mp)
+
 timeline = project.GetCurrentTimeline()
 print_obj('Timeline', timeline)
 
