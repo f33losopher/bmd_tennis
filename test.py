@@ -2,22 +2,8 @@ from python_get_resolve import GetResolve
 
 from init_project import create_timeline
 from process_timeline_items import process_timeline
-from tennis_score import TennisScore
-
-def update_score(markerValue):
-    print tennisScore.get_match_score()
-    print '  ', markerValue
-
-    if markerValue['color'] == END_MY_PT:
-        print 'My point'
-        tennisScore.update_game_score(FELIX, OPP)
-    elif markerValue['color'] == END_OPP_PT:
-        print 'His point'
-        tennisScore.update_game_score(OPP, FELIX)
 
 ROOT_MEDIA_FOLDER = "C:\\Users\\Felix\\Pictures\\GoPro\\2021-04-10_OneHandBH\\HERO5 Black 1"
-
-tennisScore = TennisScore()
 
 resolve = app.GetResolve()
 resolve.OpenPage("edit")
