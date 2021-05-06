@@ -1,4 +1,5 @@
 from moviepy.editor import *
+import moviepy.editor as mp
 from PIL import Image, ImageDraw
 from tennis_score import TennisScore
 
@@ -8,6 +9,7 @@ END_MY_PT = 'Cyan'
 END_OPP_PT = 'Green'
 FELIX = 'felix'
 OPP = 'opponent'
+FPS = 60
 
 BASE_SCOREBOARD = "C:\\Users\\Felix\\Pictures\\GoPro\\scoreboard.jpg"
 
@@ -22,7 +24,6 @@ def process_timeline(ROOT_MEDIA_FOLDER, timeline):
         sorted_frames = sorted(markers.keys())
         in_file = ROOT_MEDIA_FOLDER + '\\' + timelineItem.GetName()
 
-        FPS = 60
         clipNo = 1
         start = 0
         end = 0
@@ -33,7 +34,10 @@ def process_timeline(ROOT_MEDIA_FOLDER, timeline):
             else:
                 end = frame
                 clip = VideoFileClip(in_file).subclip(start/FPS, end/FPS)
-                video = CompositeVideoClip([clip])
+                scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + str(clipNo) + '.jpg')\
+                        .set_duration(clip.duration)\
+                        .set_pos((10,20))
+                video = CompositeVideoClip([clip, scoreboard])
                 video.write_videofile(ROOT_MEDIA_FOLDER + "\\clip_" + str(clipNo) + '.mp4')
 
                 clipNo += 1
