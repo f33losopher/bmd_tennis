@@ -33,11 +33,11 @@ def process_timeline(timeline):
             else:
                 end = frame
                 clip = VideoFileClip(in_file).subclip(start/FPS, end/FPS)
-                scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + str(clipNo) + '.jpg')\
+                scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + to_alpha_index(clipNo) + '.jpg')\
                         .set_duration(clip.duration)\
                         .set_pos((10,20))
                 video = CompositeVideoClip([clip, scoreboard])
-                video.write_videofile(ROOT_MEDIA_FOLDER + "\\clip_" + str(clipNo) + '.mp4')
+                video.write_videofile(ROOT_MEDIA_FOLDER + "\\clip_" + to_alpha_index(clipNo) + '.mp4')
 
                 clipNo += 1
                 update_score(markers[frame])
@@ -47,6 +47,20 @@ def process_timeline(timeline):
         print 'sorted_frames: ', sorted_frames
         print 'GetDuration(): ', timelineItem.GetDuration()
         
+# Since sorting is alphabetical, convert the clip number to 3 character letters
+# Will handle 1000 clips
+def to_alpha_index(num):
+    conv =['a','b','c','d','e','f','g','h','i','j','k']
+    rtn = []
+    while (num > 0):
+        idx = num % 10;
+        rtn.insert(0, conv[idx])
+        num /= 10
+
+    while len(rtn) < 3:
+        rtn.insert(0, 'a')
+
+    return "".join(rtn)
 
 def update_scoreboard(clipNo):
     img = Image.open(BASE_SCOREBOARD)
@@ -54,7 +68,7 @@ def update_scoreboard(clipNo):
     draw = ImageDraw.Draw(clear)
     draw.text((10, 10), FELIX + " " + str(tennisScore.get_match_score()['game'][FELIX]))
     draw.text((10, 20), OPP + " " + str(tennisScore.get_match_score()['game'][OPP]))
-    clear.save(ROOT_MEDIA_FOLDER + '\\score_pt_' + str(clipNo) + '.jpg')
+    clear.save(ROOT_MEDIA_FOLDER + '\\score_pt_' + to_alpha_index(clipNo) + '.jpg')
 
 
 def update_score(markerValue):
