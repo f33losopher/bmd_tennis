@@ -29,27 +29,3 @@ mediaPool = project.GetMediaPool()
 # Trim unwanted parts of videos
 timeline = project.GetCurrentTimeline()
 process_timeline(ROOT_MEDIA_FOLDER, timeline)
-
-
-# Tally Score via markers
-# Dark Blue I win point
-# Light blue opponent wins point
-# timeline = project.GetCurrentTimeline()
-# timeLineVideos = timeline.GetItemListInTrack('video', 1)
-# for timelineItem in timeLineVideos:
-#     markers = timelineItem.GetMarkers()
-#     sorted_keys = sorted(markers.keys())
-#     for key in sorted_keys:
-#         update_score(markers[key])
-
-# Update Scoreboard Macro
-# timeline = project.GetCurrentTimeline()
-# timeLineVideos = timeline.GetItemListInTrack('video', 1)
-# for timelineItem in timeLineVideos:
-#     timelineItem.AddFusionComp()
-#     fusionComponents = timelineItem.GetFusionCompNameList()
-#     print 'fusionComponents:', fusionComponents
-#     if len(fusionComponents) > 0:
-#         for compName in fusionComponents:
-#             comp = timelineItem.GetFusionCompByName(compName)
-#             print comp
