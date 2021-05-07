@@ -1,6 +1,7 @@
 from moviepy.editor import *
 import moviepy.editor as mp
 from PIL import Image, ImageDraw
+from project_consts import *
 from tennis_score import TennisScore
 
 # Use markers trim unwanted video clips
@@ -11,12 +12,10 @@ FELIX = 'felix'
 OPP = 'opponent'
 FPS = 60
 
-BASE_SCOREBOARD = "C:\\Users\\Felix\\Pictures\\GoPro\\scoreboard.jpg"
-
 tennisScore = TennisScore()
 
-def process_timeline(ROOT_MEDIA_FOLDER, timeline):
-    update_scoreboard(ROOT_MEDIA_FOLDER, 1)
+def process_timeline(timeline):
+    update_scoreboard(1)
 
     timelineItems = timeline.GetItemListInTrack('video', 1)
     for timelineItem in timelineItems:
@@ -42,14 +41,14 @@ def process_timeline(ROOT_MEDIA_FOLDER, timeline):
 
                 clipNo += 1
                 update_score(markers[frame])
-                update_scoreboard(ROOT_MEDIA_FOLDER, clipNo)
+                update_scoreboard(clipNo)
 
 
         print 'sorted_frames: ', sorted_frames
         print 'GetDuration(): ', timelineItem.GetDuration()
         
 
-def update_scoreboard(ROOT_MEDIA_FOLDER, clipNo):
+def update_scoreboard(clipNo):
     img = Image.open(BASE_SCOREBOARD)
     clear = img.copy()
     draw = ImageDraw.Draw(clear)
