@@ -19,28 +19,37 @@ class TennisScore:
     def update_game_score(self, player1, player2):
         # TODO need to account for a tie break
 
+        set_score = self.match_score['set']
         game_score = self.match_score['game']
-        if game_score[player1] == 0:
-            game_score[player1] = 15
-        elif game_score[player1] == 15:
-            game_score[player1] = 30
-        elif game_score[player1] == 30:
-            game_score[player1] = 40
-        elif game_score[player1] == 40:
-            if game_score[player2] == 40:
-                game_score[player1] = 'Ad'
-                game_score[player2] = '-'
-            else:
+
+        if set_score[player1][-1] == 6 and set_score[player2][-1] == 6:
+            game_score[player1] += 1
+            if (game_score[player1] >= 7) and ((game_score[player1] - game_score[player2]) > 1):
                 self.update_set_score(player1, player2)
                 game_score[player1] = 0
                 game_score[player2] = 0
-        elif game_score[player1] == 'Ad':
-            self.update_set_score(player1, player2)
-            game_score[player1] = 0
-            game_score[player2] = 0
-        elif game_score[player1] == '-':
-            game_score[player1] = 40
-            game_score[player2] = 40
+        else:
+            if game_score[player1] == 0:
+                game_score[player1] = 15
+            elif game_score[player1] == 15:
+                game_score[player1] = 30
+            elif game_score[player1] == 30:
+                game_score[player1] = 40
+            elif game_score[player1] == 40:
+                if game_score[player2] == 40:
+                    game_score[player1] = 'Ad'
+                    game_score[player2] = '-'
+                else:
+                    self.update_set_score(player1, player2)
+                    game_score[player1] = 0
+                    game_score[player2] = 0
+            elif game_score[player1] == 'Ad':
+                self.update_set_score(player1, player2)
+                game_score[player1] = 0
+                game_score[player2] = 0
+            elif game_score[player1] == '-':
+                game_score[player1] = 40
+                game_score[player2] = 40
     
     # player1 won game
     # player2 lost game
