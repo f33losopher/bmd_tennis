@@ -8,14 +8,18 @@ from tennis_score import TennisScore
 START_PT = 'Blue'
 END_MY_PT = 'Cyan'
 END_OPP_PT = 'Green'
+CONTINUE_END = 'Yellow'
 FELIX = 'felix'
 OPP = 'opponent'
-FPS = 60
 
 tennisScore = TennisScore()
 
 def process_timeline(timeline):
     update_scoreboard(1)
+
+    # In the event a point crosses a clip, need to store the first half
+    # of the clip to concatenate with the second half
+    continue_clip = None
 
     timelineItems = timeline.GetItemListInTrack('video', 1)
     for timelineItem in timelineItems:
@@ -30,19 +34,26 @@ def process_timeline(timeline):
             print markers[frame]
             if markers[frame]['color'] == START_PT:
                 start = frame
-            else:
+            elif markers[frame]['color'] == END_MY_PT or markers[frame]['color'] == END_OPP_PT:
                 end = frame
                 clip = VideoFileClip(in_file).subclip(start/FPS, end/FPS)
                 scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + to_alpha_index(clipNo) + '.jpg')\
                         .set_duration(clip.duration)\
                         .set_pos((10,20))
-                video = CompositeVideoClip([clip, scoreboard])
-                video.write_videofile(ROOT_MEDIA_FOLDER + "\\clip_" + to_alpha_index(clipNo) + '.mp4')
+                
+                if continue_clip:
+                    clip = concatenate_videoclips([continue_clip, clip])
+                    continue_clip = None
+
+                # video = CompositeVideoClip([clip, scoreboard])
+                video = clip
+                video.write_videofile(ROOT_MEDIA_FOLDER + "\\clip_" + to_alpha_index(clipNo) + '.mp4', fps=FPS, audio_codec='aac')
 
                 clipNo += 1
                 update_score(markers[frame])
                 update_scoreboard(clipNo)
-
+            elif markers[frame]['color'] == CONTINUE_END:
+                continue_clip = VideoFileClip(in_file).subclip(start/FPS, frame/FPS)
 
         print 'sorted_frames: ', sorted_frames
         print 'GetDuration(): ', timelineItem.GetDuration()
