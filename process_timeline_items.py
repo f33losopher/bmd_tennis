@@ -1,5 +1,8 @@
 from moviepy.editor import *
+from shutil import copy2
 import moviepy.editor as mp
+import moviepy.video.io.ffmpeg_tools as ffmpeg_tools
+import os
 from PIL import Image, ImageDraw
 from project_consts import *
 from tennis_score import TennisScore
@@ -40,14 +43,31 @@ def process_timeline(timeline):
                 scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + to_alpha_index(clipNo) + '.jpg')\
                         .set_duration(clip.duration)\
                         .set_pos((10,20))
-                
                 if continue_clip:
                     clip = concatenate_videoclips([continue_clip, clip])
                     continue_clip = None
 
-                # video = CompositeVideoClip([clip, scoreboard])
-                video = clip
-                video.write_videofile(ROOT_MEDIA_FOLDER + "\\clip_" + to_alpha_index(clipNo) + '.mp4', fps=FPS, audio_codec='aac')
+                video = CompositeVideoClip([clip, scoreboard])
+
+                videoFile = ROOT_MEDIA_FOLDER + "\\clip_" + to_alpha_index(clipNo) + '.mp4'
+                tempAudio = ROOT_MEDIA_FOLDER + "\\temp_audio_" + to_alpha_index(clipNo) + ".mp3"
+                tempVideo = ROOT_MEDIA_FOLDER + "\\temp_video_" + to_alpha_index(clipNo) + ".mp4"
+                video.write_videofile(videoFile, 
+                    threads=4,
+                    fps=FPS,
+                    remove_temp=False,
+                    temp_audiofile=tempAudio)
+                
+                # Bug with MoviePy using ffmpeg. Need to
+                # Save off the sound file
+                # Manually use ffmpeg to merge the video clip with the sound
+                # command = 'ffmpeg -y -i ' + videoFile + ' -i ' + tempAudio + ' -c:v copy -c:a aac -shortest ' + tempVideo
+                ffmpeg_tools.ffmpeg_merge_video_audio(videoFile, tempAudio, tempVideo,
+                    vcodec='copy',
+                    acodec='aac')
+
+                os.remove(videoFile)
+                os.remove(tempAudio)
 
                 clipNo += 1
                 update_score(markers[frame])
