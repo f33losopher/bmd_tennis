@@ -25,27 +25,40 @@ def process_timeline(timeline):
     continue_clip = None
 
     timelineItems = timeline.GetItemListInTrack('video', 1)
+    clipNo = 1
     for timelineItem in timelineItems:
         markers = timelineItem.GetMarkers()
         sorted_frames = sorted(markers.keys())
         in_file = ROOT_MEDIA_FOLDER + '\\' + timelineItem.GetName()
 
-        clipNo = 1
         start = 0
         end = 0
+
+        print 'sorted_frames: ', sorted_frames
+        print 'GetDuration(): ', timelineItem.GetDuration()
+        print 'timelineItem.GetName(): ', timelineItem.GetName()
+        
         for frame in sorted_frames:
-            print markers[frame]
+            print "    Working on frame: ", frame
+            print "    markers[frame]: ", markers[frame]
             if markers[frame]['color'] == START_PT:
                 start = frame
             elif markers[frame]['color'] == END_MY_PT or markers[frame]['color'] == END_OPP_PT:
                 end = frame
-                clip = VideoFileClip(in_file).subclip(start/FPS, end/FPS)
+
+                clip = None
+                if continue_clip:
+                    print "    Found a continue_clip, concatenating with clip"
+                    start = 0
+                    clip = VideoFileClip(in_file).subclip(start/FPS, end/FPS)
+                    clip = concatenate_videoclips([continue_clip, clip])
+                    continue_clip = None
+                else:
+                    clip = VideoFileClip(in_file).subclip(start/FPS, end/FPS)
+
                 scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + to_alpha_index(clipNo) + '.jpg')\
                         .set_duration(clip.duration)\
                         .set_pos((10,20))
-                if continue_clip:
-                    clip = concatenate_videoclips([continue_clip, clip])
-                    continue_clip = None
 
                 video = CompositeVideoClip([clip, scoreboard])
 
@@ -73,11 +86,8 @@ def process_timeline(timeline):
                 update_score(markers[frame])
                 update_scoreboard(clipNo)
             elif markers[frame]['color'] == CONTINUE_END:
-                continue_clip = VideoFileClip(in_file).subclip(start/FPS, frame/FPS)
+                continue_clip = VideoFileClip(in_file).subclip(start/FPS, timelineItem.GetDuration()/FPS)
 
-        print 'sorted_frames: ', sorted_frames
-        print 'GetDuration(): ', timelineItem.GetDuration()
-        
 # Since sorting is alphabetical, convert the clip number to 3 character letters
 # Will handle 1000 clips
 def to_alpha_index(num):
