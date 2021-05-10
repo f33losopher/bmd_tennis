@@ -3,7 +3,7 @@ from shutil import copy2
 import moviepy.editor as mp
 import moviepy.video.io.ffmpeg_tools as ffmpeg_tools
 import os
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 from project_consts import *
 from tennis_score import TennisScore
 
@@ -79,11 +79,13 @@ def to_alpha_index(num):
     return "".join(rtn)
 
 def update_scoreboard(clipNo):
+    # TODO Make spacing better for scoreboard
+    sb_font = ImageFont.truetype(SELF_DESTRUCT, 30)
     img = Image.open(BASE_SCOREBOARD)
     clear = img.copy()
     draw = ImageDraw.Draw(clear)
-    draw.text((10, 10), FELIX + " " + str(tennisScore.get_match_score()['game'][FELIX]))
-    draw.text((10, 20), OPP + " " + str(tennisScore.get_match_score()['game'][OPP]))
+    draw.text((10, 5), FELIX + " " + str(tennisScore.get_match_score()['game'][FELIX]), anchor="lm", font=sb_font)
+    draw.text((10, 40), OPP + "   " + str(tennisScore.get_match_score()['game'][OPP]), anchor="lm", font=sb_font)
     clear.save(ROOT_MEDIA_FOLDER + '\\score_pt_' + to_alpha_index(clipNo) + '.jpg')
 
 
@@ -99,6 +101,7 @@ def update_score(markerValue):
         tennisScore.update_game_score(OPP, FELIX)
 
 def create_clip(in_file, start, end, clipNo, subClip=""):
+    print "create_clip start/FPS: " , start/FPS, " end/FPS: ", end/FPS
     clip = VideoFileClip(in_file).subclip(start/FPS, end/FPS)
 
     scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + to_alpha_index(clipNo) + '.jpg')\
