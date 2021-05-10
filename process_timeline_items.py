@@ -80,7 +80,7 @@ def to_alpha_index(num):
 
 def update_scoreboard(clipNo):
     # TODO Make spacing better for scoreboard
-    sb_font = ImageFont.truetype(SELF_DESTRUCT, 30)
+    sb_font = ImageFont.truetype(ERBOS_DRACO, 25)
     img = Image.open(BASE_SCOREBOARD)
     clear = img.copy()
     draw = ImageDraw.Draw(clear)
