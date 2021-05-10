@@ -44,49 +44,24 @@ def process_timeline(timeline):
             if markers[frame]['color'] == START_PT:
                 start = frame
             elif markers[frame]['color'] == END_MY_PT or markers[frame]['color'] == END_OPP_PT:
+                # Used to keep ordering of a shot that spans two timelineItems
+                # Allows for sorting to be correct, and use same scoreboard for both
+                subClip = ""
+                if continue_clip:
+                    start = 0
+                    continue_clip = None
+                    subClip = 'a'
+
                 end = frame
 
-                clip = None
-                if continue_clip:
-                    print "    Found a continue_clip, concatenating with clip"
-                    start = 0
-                    clip = VideoFileClip(in_file).subclip(start/FPS, end/FPS)
-                    clip = concatenate_videoclips([continue_clip, clip])
-                    continue_clip = None
-                else:
-                    clip = VideoFileClip(in_file).subclip(start/FPS, end/FPS)
-
-                scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + to_alpha_index(clipNo) + '.jpg')\
-                        .set_duration(clip.duration)\
-                        .set_pos((10,20))
-
-                video = CompositeVideoClip([clip, scoreboard])
-
-                videoFile = ROOT_MEDIA_FOLDER + "\\clip_" + to_alpha_index(clipNo) + '.mp4'
-                tempAudio = ROOT_MEDIA_FOLDER + "\\temp_audio_" + to_alpha_index(clipNo) + ".mp3"
-                tempVideo = ROOT_MEDIA_FOLDER + "\\temp_video_" + to_alpha_index(clipNo) + ".mp4"
-                video.write_videofile(videoFile, 
-                    threads=4,
-                    fps=FPS,
-                    remove_temp=False,
-                    temp_audiofile=tempAudio)
-                
-                # Bug with MoviePy using ffmpeg. Need to
-                # Save off the sound file
-                # Manually use ffmpeg to merge the video clip with the sound
-                # command = 'ffmpeg -y -i ' + videoFile + ' -i ' + tempAudio + ' -c:v copy -c:a aac -shortest ' + tempVideo
-                ffmpeg_tools.ffmpeg_merge_video_audio(videoFile, tempAudio, tempVideo,
-                    vcodec='copy',
-                    acodec='aac')
-
-                os.remove(videoFile)
-                os.remove(tempAudio)
+                create_clip(in_file, start, end, clipNo, subClip)
 
                 clipNo += 1
                 update_score(markers[frame])
                 update_scoreboard(clipNo)
             elif markers[frame]['color'] == CONTINUE_END:
-                continue_clip = VideoFileClip(in_file).subclip(start/FPS, timelineItem.GetDuration()/FPS)
+                create_clip(in_file, start, timelineItem.GetDuration(), clipNo)
+                continue_clip = True
 
 # Since sorting is alphabetical, convert the clip number to 3 character letters
 # Will handle 1000 clips
@@ -122,3 +97,32 @@ def update_score(markerValue):
     elif markerValue['color'] == END_OPP_PT:
         print 'His point'
         tennisScore.update_game_score(OPP, FELIX)
+
+def create_clip(in_file, start, end, clipNo, subClip=""):
+    clip = VideoFileClip(in_file).subclip(start/FPS, end/FPS)
+
+    scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + to_alpha_index(clipNo) + '.jpg')\
+            .set_duration(clip.duration)\
+            .set_pos((10,20))
+
+    video = CompositeVideoClip([clip, scoreboard])
+
+    videoFile = ROOT_MEDIA_FOLDER + "\\clip_" + to_alpha_index(clipNo) + subClip+ '.mp4'
+    tempAudio = ROOT_MEDIA_FOLDER + "\\temp_audio_" + to_alpha_index(clipNo) + subClip + ".mp3"
+    tempVideo = ROOT_MEDIA_FOLDER + "\\temp_video_" + to_alpha_index(clipNo) + subClip + ".mp4"
+    video.write_videofile(videoFile, 
+        threads=4,
+        fps=FPS,
+        remove_temp=False,
+        temp_audiofile=tempAudio)
+    
+    # Bug with MoviePy using ffmpeg. Need to
+    # Save off the sound file
+    # Manually use ffmpeg to merge the video clip with the sound
+    # command = 'ffmpeg -y -i ' + videoFile + ' -i ' + tempAudio + ' -c:v copy -c:a aac -shortest ' + tempVideo
+    ffmpeg_tools.ffmpeg_merge_video_audio(videoFile, tempAudio, tempVideo,
+        vcodec='copy',
+        acodec='aac')
+
+    os.remove(videoFile)
+    os.remove(tempAudio)
