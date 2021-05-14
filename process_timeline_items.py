@@ -6,6 +6,7 @@ import os
 from PIL import Image, ImageDraw, ImageFont
 from project_consts import *
 from tennis_score import TennisScore
+import time
 
 # Use markers trim unwanted video clips
 START_PT = 'Blue'
@@ -102,30 +103,41 @@ def update_score(markerValue):
 
 def create_clip(in_file, start, end, clipNo, subClip=""):
     print "create_clip start/FPS: " , start/FPS, " end/FPS: ", end/FPS
-    clip = VideoFileClip(in_file).subclip(start/FPS, end/FPS)
-
-    scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + to_alpha_index(clipNo) + '.jpg')\
-            .set_duration(clip.duration)\
-            .set_pos((10,20))
-
-    video = CompositeVideoClip([clip, scoreboard])
 
     videoFile = ROOT_MEDIA_FOLDER + "\\clip_" + to_alpha_index(clipNo) + subClip+ '.mp4'
-    tempAudio = ROOT_MEDIA_FOLDER + "\\temp_audio_" + to_alpha_index(clipNo) + subClip + ".mp3"
-    tempVideo = ROOT_MEDIA_FOLDER + "\\temp_video_" + to_alpha_index(clipNo) + subClip + ".mp4"
-    video.write_videofile(videoFile, 
-        threads=4,
-        fps=FPS,
-        remove_temp=False,
-        temp_audiofile=tempAudio)
+    cmd = "ffmpeg -i \"{0}\" -ss {1} -to {2} -async 1 \"{3}\"".format(
+        in_file, 
+        time.strftime('%H:%M:%S', time.gmtime(start/FPS)), 
+        time.strftime('%H:%M:%S', time.gmtime(end/FPS)), 
+        videoFile)
+
+    print "System command: ", cmd
+    os.system(cmd)
+
+    # clip = VideoFileClip(in_file).subclip(start/FPS, end/FPS)
+
+    # scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + to_alpha_index(clipNo) + '.jpg')\
+    #         .set_duration(clip.duration)\
+    #         .set_pos((10,20))
+
+    # video = CompositeVideoClip([clip, scoreboard])
+
+    # videoFile = ROOT_MEDIA_FOLDER + "\\clip_" + to_alpha_index(clipNo) + subClip+ '.mp4'
+    # tempAudio = ROOT_MEDIA_FOLDER + "\\temp_audio_" + to_alpha_index(clipNo) + subClip + ".mp3"
+    # tempVideo = ROOT_MEDIA_FOLDER + "\\temp_video_" + to_alpha_index(clipNo) + subClip + ".mp4"
+    # video.write_videofile(videoFile, 
+    #     threads=4,
+    #     fps=FPS,
+    #     remove_temp=False,
+    #     temp_audiofile=tempAudio)
     
     # Bug with MoviePy using ffmpeg. Need to
     # Save off the sound file
     # Manually use ffmpeg to merge the video clip with the sound
     # command = 'ffmpeg -y -i ' + videoFile + ' -i ' + tempAudio + ' -c:v copy -c:a aac -shortest ' + tempVideo
-    ffmpeg_tools.ffmpeg_merge_video_audio(videoFile, tempAudio, tempVideo,
-        vcodec='copy',
-        acodec='aac')
+    # ffmpeg_tools.ffmpeg_merge_video_audio(videoFile, tempAudio, tempVideo,
+    #     vcodec='copy',
+    #     acodec='aac')
 
-    os.remove(videoFile)
-    os.remove(tempAudio)
+    # os.remove(videoFile)
+    # os.remove(tempAudio)
