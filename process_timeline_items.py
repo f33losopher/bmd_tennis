@@ -83,10 +83,17 @@ def update_scoreboard(clipNo):
     img = Image.open(BASE_SCOREBOARD)
     clear = img.copy()
     draw = ImageDraw.Draw(clear)
-    draw.text((10, 5),  PLAYERS[PLAYER1] + " " + str(tennisScore.get_match_score()['game'][PLAYER1]), anchor="lm", font=sb_font)
-    draw.text((10, 40), PLAYERS[PLAYER2] + " " + str(tennisScore.get_match_score()['game'][PLAYER2]), anchor="lm", font=sb_font)
+    draw.text((10, 5), get_score(PLAYER1), anchor="lm", font=sb_font)
+    draw.text((10, 40), get_score(PLAYER2), anchor="lm", font=sb_font)
     clear.save(ROOT_MEDIA_FOLDER + '\\score_pt_' + to_alpha_index(clipNo) + '.jpg')
 
+def get_score(player):
+    score = PLAYERS[player] + " "
+    for s in tennisScore.get_match_score()['set'][player]:
+        score = score + str(s) + " "
+
+    score = score + str(tennisScore.get_match_score()['game'][player])
+    return score
 
 def update_score(markerValue):
     print tennisScore.get_match_score()
