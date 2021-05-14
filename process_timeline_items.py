@@ -10,11 +10,9 @@ import time
 
 # Use markers trim unwanted video clips
 START_PT = 'Blue'
-END_MY_PT = 'Cyan'
-END_OPP_PT = 'Green'
+END_PLAYER1_PT = 'Cyan'
+END_PLAYER2_PT = 'Green'
 CONTINUE_END = 'Yellow'
-FELIX = 'felix'
-OPP = 'opponent'
 
 tennisScore = TennisScore()
 
@@ -44,7 +42,7 @@ def process_timeline(timeline):
             print "    markers[frame]: ", markers[frame]
             if markers[frame]['color'] == START_PT:
                 start = frame
-            elif markers[frame]['color'] == END_MY_PT or markers[frame]['color'] == END_OPP_PT:
+            elif markers[frame]['color'] == END_PLAYER1_PT or markers[frame]['color'] == END_PLAYER2_PT:
                 # Used to keep ordering of a shot that spans two timelineItems
                 # Allows for sorting to be correct, and use same scoreboard for both
                 subClip = ""
@@ -85,8 +83,8 @@ def update_scoreboard(clipNo):
     img = Image.open(BASE_SCOREBOARD)
     clear = img.copy()
     draw = ImageDraw.Draw(clear)
-    draw.text((10, 5), FELIX + " " + str(tennisScore.get_match_score()['game'][FELIX]), anchor="lm", font=sb_font)
-    draw.text((10, 40), OPP + "   " + str(tennisScore.get_match_score()['game'][OPP]), anchor="lm", font=sb_font)
+    draw.text((10, 5),  PLAYERS[PLAYER1] + " " + str(tennisScore.get_match_score()['game'][PLAYER1]), anchor="lm", font=sb_font)
+    draw.text((10, 40), PLAYERS[PLAYER2] + " " + str(tennisScore.get_match_score()['game'][PLAYER2]), anchor="lm", font=sb_font)
     clear.save(ROOT_MEDIA_FOLDER + '\\score_pt_' + to_alpha_index(clipNo) + '.jpg')
 
 
@@ -94,12 +92,12 @@ def update_score(markerValue):
     print tennisScore.get_match_score()
     print '  ', markerValue
 
-    if markerValue['color'] == END_MY_PT:
+    if markerValue['color'] == END_PLAYER1_PT:
         print 'My point'
-        tennisScore.update_game_score(FELIX, OPP)
-    elif markerValue['color'] == END_OPP_PT:
+        tennisScore.update_game_score(PLAYER1, PLAYER2)
+    elif markerValue['color'] == END_PLAYER2_PT:
         print 'His point'
-        tennisScore.update_game_score(OPP, FELIX)
+        tennisScore.update_game_score(PLAYER2, PLAYER1)
 
 def create_clip(in_file, start, end, clipNo, subClip=""):
     print "create_clip start/FPS: " , start/FPS, " end/FPS: ", end/FPS

@@ -2,12 +2,12 @@ class TennisScore:
     def __init__(self):
         self.match_score = {
             'set': {
-                'felix': [0],
-                'opponent': [0]
+                'Player1': [0],
+                'Player2': [0]
             },
             'game': {
-                'felix': 0,
-                'opponent': 0
+                'Player1': 0,
+                'Player2': 0
             }
         }
     
