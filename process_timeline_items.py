@@ -111,6 +111,7 @@ def create_clip(in_file, start, end, clipNo, subClip=""):
 
     videoFile = ROOT_MEDIA_FOLDER + "\\clip_" + to_alpha_index(clipNo) + subClip+ '.mp4'
     tempVideo = ROOT_MEDIA_FOLDER + "\\temp.mp4"
+    tempAudio = ROOT_MEDIA_FOLDER + "\\tempAudio.mp4"
 
     # Manually use ffmpeg due to bug in subClip cutting out sound
     cmd = "ffmpeg -i \"{0}\" -ss {1} -to {2} -async 1 \"{3}\"".format(
@@ -122,7 +123,7 @@ def create_clip(in_file, start, end, clipNo, subClip=""):
     print "System command: ", cmd
     os.system(cmd)
 
-    clip = VideoFileClip(tempVideo)
+    clip = VideoFileClip(tempVideo, audio_fps=AUDIO_FPS)
 
     scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + to_alpha_index(clipNo) + '.jpg')\
             .set_duration(clip.duration)\
@@ -132,6 +133,14 @@ def create_clip(in_file, start, end, clipNo, subClip=""):
 
     video.write_videofile(videoFile, 
         threads=4,
-        fps=FPS)
+        fps=FPS,
+        audio=True,
+        audio_fps=AUDIO_FPS,
+        audio_codec='aac',
+        temp_audiofile=tempAudio,
+        rewrite_audio=False,
+        remove_temp=False)
+
     os.remove(tempVideo)
+    os.remove(tempAudio)
     

@@ -6,9 +6,10 @@ PLAYER1 = 'Player1'
 PLAYER2 = 'Player2'
 
 # Update per match
-FPS = 60.0
-ROOT_MEDIA_FOLDER = "C:\\Users\\Felix\\Pictures\\GoPro\\2021-04-10_OneHandBH\HERO5 Black 1"
+FPS = 59.940
+AUDIO_FPS = 48000
+ROOT_MEDIA_FOLDER = "C:\\Users\\Felix\\Pictures\\GoPro\\2021-05-14_PhimIndyPark\HERO5 Black 1"
 PLAYERS = {
     PLAYER1: 'Felix ',
-    PLAYER2: 'Junior'
+    PLAYER2: 'Phim  '
 }
