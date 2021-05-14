@@ -109,8 +109,9 @@ def update_score(markerValue):
 def create_clip(in_file, start, end, clipNo, subClip=""):
     print "create_clip start/FPS: " , start/FPS, " end/FPS: ", end/FPS
 
-    videoFile = ROOT_MEDIA_FOLDER + "\\clip_" + to_alpha_index(clipNo) + subClip+ '.mp4'
+    # videoFile = ROOT_MEDIA_FOLDER + "\\clip_" + to_alpha_index(clipNo) + subClip + '.mp4'
     tempVideo = ROOT_MEDIA_FOLDER + "\\temp.mp4"
+    tempVideo2 = ROOT_MEDIA_FOLDER + "\\temp_" + to_alpha_index(clipNo) + subClip + '.mp4'
     tempAudio = ROOT_MEDIA_FOLDER + "\\tempAudio.mp4"
 
     # Manually use ffmpeg due to bug in subClip cutting out sound
@@ -124,14 +125,13 @@ def create_clip(in_file, start, end, clipNo, subClip=""):
     os.system(cmd)
 
     clip = VideoFileClip(tempVideo, audio_fps=AUDIO_FPS)
-
     scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + to_alpha_index(clipNo) + '.jpg')\
             .set_duration(clip.duration)\
             .set_pos((10,20))
 
     video = CompositeVideoClip([clip, scoreboard])
 
-    video.write_videofile(videoFile, 
+    video.write_videofile(tempVideo2, 
         threads=4,
         fps=FPS,
         audio=True,
@@ -141,6 +141,7 @@ def create_clip(in_file, start, end, clipNo, subClip=""):
         rewrite_audio=False,
         remove_temp=False)
 
+    
     os.remove(tempVideo)
     os.remove(tempAudio)
     

@@ -17,7 +17,7 @@ def create_timeline(resolve):
     # mediaClips aren't in any order, sort it by 
     # clip.GetName()
     # Remove Timeline from list
-    mediaClips = filter(lambda k: k.GetName().startswith('clip_'), mediaClips)
+    mediaClips = filter(lambda k: k.GetName().startswith('temp_'), mediaClips)
     mediaClips.sort(key=lambda k: k.GetName())
     mediaClips = filter(lambda k: k.GetName() != 'Timeline', mediaClips)
     for clip in mediaClips:
@@ -37,7 +37,7 @@ process_timeline(timeline)
 # Time to import all the new clips
 mediaStorage = resolve.GetMediaStorage()
 file_list = mediaStorage.GetFileList(ROOT_MEDIA_FOLDER)
-file_list = filter(lambda k: k.find('clip_') != -1, file_list)
+file_list = filter(lambda k: k.find('temp_') != -1, file_list)
 mediaStorage.AddItemListToMediaPool(file_list)
 
 create_timeline(resolve)
