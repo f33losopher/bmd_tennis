@@ -78,21 +78,28 @@ def to_alpha_index(num):
     return "".join(rtn)
 
 def update_scoreboard(clipNo):
-    # TODO Make spacing better for scoreboard
     sb_font = ImageFont.truetype(ERBOS_DRACO, 25)
     img = Image.open(BASE_SCOREBOARD)
     clear = img.copy()
     draw = ImageDraw.Draw(clear)
-    draw.text((10, 5), get_score(PLAYER1), anchor="lm", font=sb_font)
-    draw.text((10, 40), get_score(PLAYER2), anchor="lm", font=sb_font)
+
+    draw.text((10, 5), get_set_score(PLAYER1), anchor="lm", font=sb_font)
+    draw.text((340, 5), get_game_score(PLAYER1), anchor="rm", font=sb_font)
+
+    draw.text((10, 40), get_set_score(PLAYER2), anchor="lm", font=sb_font)
+    draw.text((340, 40), get_game_score(PLAYER2), anchor="rm", font=sb_font)
+
     clear.save(ROOT_MEDIA_FOLDER + '\\score_pt_' + to_alpha_index(clipNo) + '.jpg')
 
-def get_score(player):
+def get_set_score(player):
     score = PLAYERS[player] + " "
     for s in tennisScore.get_match_score()['set'][player]:
         score = score + str(s) + " "
 
-    score = score + str(tennisScore.get_match_score()['game'][player])
+    return score
+
+def get_game_score(player):
+    score = str(tennisScore.get_match_score()['game'][player])
     return score
 
 def update_score(markerValue):
