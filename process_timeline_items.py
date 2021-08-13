@@ -125,7 +125,8 @@ def create_clip(in_file, start, end, clipNo, subClip=""):
     clip = VideoFileClip(in_file, audio_fps=AUDIO_FPS).subclip(start/FPS, end/FPS)
     scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + to_alpha_index(clipNo) + '.jpg')\
             .set_duration(clip.duration)\
-            .set_pos((10,20))
+            .set_pos((10,20))\
+            .set_opacity(0.80)
 
     video = CompositeVideoClip([clip, scoreboard])
 
