@@ -2,6 +2,7 @@
 Black Magic Design API Scripting for Tennis Videos
 
 In Davinci resolve set the color shortcuts
+- Davinci Resolve -> Keyboard Preferences -> Mark
 - START_PT = 'Blue'
 - END_PLAYER1_PT = 'Cyan'
 - END_PLAYER2_PT = 'Green'
