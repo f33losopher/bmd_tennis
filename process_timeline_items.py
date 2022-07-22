@@ -33,13 +33,13 @@ def process_timeline(timeline):
         start = 0
         end = 0
 
-        print 'sorted_frames: ', sorted_frames
-        print 'GetDuration(): ', timelineItem.GetDuration()
-        print 'timelineItem.GetName(): ', timelineItem.GetName()
+        print ('sorted_frames: ', sorted_frames)
+        print ('GetDuration(): ', timelineItem.GetDuration())
+        print ('timelineItem.GetName(): ', timelineItem.GetName())
         
         for frame in sorted_frames:
-            print "    Working on frame: ", frame
-            print "    markers[frame]: ", markers[frame]
+            print ("    Working on frame: ", frame)
+            print ("    markers[frame]: ", markers[frame])
             if markers[frame]['color'] == START_PT:
                 start = frame
             elif markers[frame]['color'] == END_PLAYER1_PT or markers[frame]['color'] == END_PLAYER2_PT:
@@ -103,18 +103,18 @@ def get_game_score(player):
     return score
 
 def update_score(markerValue):
-    print tennisScore.get_match_score()
-    print '  ', markerValue
+    print (tennisScore.get_match_score())
+    print ('  ', markerValue)
 
     if markerValue['color'] == END_PLAYER1_PT:
-        print 'My point'
+        print ('My point')
         tennisScore.update_game_score(PLAYER1, PLAYER2)
     elif markerValue['color'] == END_PLAYER2_PT:
-        print 'His point'
+        print ('His point')
         tennisScore.update_game_score(PLAYER2, PLAYER1)
 
 def create_clip(in_file, start, end, clipNo, subClip=""):
-    print "create_clip start/FPS: " , start/FPS, " end/FPS: ", end/FPS
+    print ("create_clip start/FPS: " , start/FPS, " end/FPS: ", end/FPS)
 
     # videoFile = ROOT_MEDIA_FOLDER + "\\clip_" + to_alpha_index(clipNo) + subClip + '.mp4'
     tempVideo = ROOT_MEDIA_FOLDER + "\\temp.mp4"
