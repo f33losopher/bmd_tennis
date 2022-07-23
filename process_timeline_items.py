@@ -5,7 +5,7 @@ import moviepy.video.io.ffmpeg_tools as ffmpeg_tools
 import os
 from PIL import Image, ImageDraw, ImageFont
 from project_consts import *
-from tennis_score import TennisScore
+from TennisScore.tennis_score import TennisScore
 import time
 
 # Use markers trim unwanted video clips
