@@ -2,11 +2,11 @@ from moviepy.editor import *
 from shutil import copy2
 import moviepy.editor as mp
 import moviepy.video.io.ffmpeg_tools as ffmpeg_tools
-import os
 from PIL import Image, ImageDraw, ImageFont
 from project_consts import *
-from TennisScore.tennis_score import TennisScore
+from tennis_score import TennisScore
 import time
+from score_factory import createTennisScore
 
 # Use markers trim unwanted video clips
 START_PT = 'Blue'
@@ -14,7 +14,7 @@ END_PLAYER1_PT = 'Cyan'
 END_PLAYER2_PT = 'Green'
 CONTINUE_END = 'Yellow'
 
-tennisScore = TennisScore()
+tennisScore = createTennisScore()
 
 def process_timeline(timeline):
     update_scoreboard(1)
@@ -93,7 +93,7 @@ def update_scoreboard(clipNo):
 
 def get_set_score(player):
     score = PLAYERS[player] + " "
-    for s in tennisScore.get_match_score()['set'][player]:
+    for s in tennisScore.get_match_score()['match'][player]:
         score = score + str(s) + " "
 
     return score

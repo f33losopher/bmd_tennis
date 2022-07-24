@@ -7,9 +7,10 @@ PLAYER1 = 'Player1'
 PLAYER2 = 'Player2'
 
 # Update per match
+GAME_TYPE = 'Standard'
 FPS = 59.940
 AUDIO_FPS = 48000
-ROOT_MEDIA_FOLDER = "C:\\Users\\fluuc\\Pictures\\GoPro\\2021-08-10-Teddi"
+ROOT_MEDIA_FOLDER = "E:\\Felix\\Pictures\\GoPro\\2022-07-22-JamesChan"
 PLAYERS = {
     PLAYER1: 'Felix ',
     PLAYER2: 'Phim  '
