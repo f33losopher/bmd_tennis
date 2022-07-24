@@ -13,5 +13,18 @@ AUDIO_FPS = 48000
 ROOT_MEDIA_FOLDER = "E:\\Felix\\Pictures\\GoPro\\2022-07-22-JamesChan"
 PLAYERS = {
     PLAYER1: 'Felix ',
-    PLAYER2: 'Phim  '
+    PLAYER2: 'James '
+}
+
+# To initialize a score before the video starts
+# Comment out if want to start from 0-0
+init_score = {
+    'match': {
+        'Player1': [6,0],
+        'Player2': [1,0]
+    },
+    'game': {
+        'Player1': 0,
+        'Player2': 0
+    }
 }

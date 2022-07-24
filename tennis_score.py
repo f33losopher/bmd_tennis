@@ -1,3 +1,5 @@
+from project_consts import *
+
 class TennisScore:
     def __init__(self):
         self.match_score = {
@@ -10,6 +12,13 @@ class TennisScore:
                 'Player2': 0
             }
         }
+
+        if ('init_score' in globals() and init_score['match']):
+            self.match_score['match'][PLAYER1] = init_score['match'][PLAYER1]
+            self.match_score['match'][PLAYER2] = init_score['match'][PLAYER2]
+        if ('init_score'  in globals() and init_score['game']):
+            self.match_score['game'][PLAYER1] = init_score['game'][PLAYER1]
+            self.match_score['game'][PLAYER2] = init_score['game'][PLAYER2]
     
     def get_match_score(self):
         return self.match_score
