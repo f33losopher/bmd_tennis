@@ -23,21 +23,21 @@ def create_timeline(resolve):
     for clip in mediaClips:
         mediaPool.AppendToTimeline(clip)
 
-resolve = app.GetResolve()
-resolve.OpenPage("edit")
+# resolve = app.GetResolve()
+# resolve.OpenPage("edit")
 
 
-projectManager = resolve.GetProjectManager()
-project = projectManager.GetCurrentProject()
+# projectManager = resolve.GetProjectManager()
+# project = projectManager.GetCurrentProject()
 
-# Trim unwanted parts of videos
-timeline = project.GetCurrentTimeline()
-process_timeline(timeline)
+# # Trim unwanted parts of videos
+# timeline = project.GetCurrentTimeline()
+# process_timeline(timeline)
 
-# Time to import all the new clips
-mediaStorage = resolve.GetMediaStorage()
-file_list = mediaStorage.GetFileList(ROOT_MEDIA_FOLDER)
-file_list = filter(lambda k: k.find('temp_') != -1, file_list)
-mediaStorage.AddItemListToMediaPool(file_list)
+# # Time to import all the new clips
+# mediaStorage = resolve.GetMediaStorage()
+# file_list = mediaStorage.GetFileList(ROOT_MEDIA_FOLDER)
+# file_list = filter(lambda k: k.find('temp_') != -1, file_list)
+# mediaStorage.AddItemListToMediaPool(file_list)
 
-create_timeline(resolve)
+# create_timeline(resolve)

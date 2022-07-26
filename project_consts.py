@@ -6,6 +6,8 @@ SELF_DESTRUCT   = BASE_DAVINCI_PATH + "fonts\\self-destruct-button-bb-font\\Self
 PLAYER1 = 'Player1'
 PLAYER2 = 'Player2'
 
+GAME_TYPES = ("Standard", "Tiebreak")
+
 # Update per match
 GAME_TYPE = 'Standard'
 FPS = 59.940
