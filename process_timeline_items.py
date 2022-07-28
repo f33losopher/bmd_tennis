@@ -4,9 +4,9 @@ import moviepy.editor as mp
 import moviepy.video.io.ffmpeg_tools as ffmpeg_tools
 from PIL import Image, ImageDraw, ImageFont
 from project_consts import *
-from tennis_score import TennisScore
+from scoring.score_factory import createTennisScore
+from scoring.tennis_score import TennisScore
 import time
-from score_factory import createTennisScore
 
 # Use markers trim unwanted video clips
 START_PT = 'Blue'
