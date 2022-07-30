@@ -7,6 +7,8 @@ from project_consts import *
 from scoring.score_factory import createTennisScore
 from scoring.tennis_score import TennisScore
 import time
+import logging
+import json
 
 # Use markers trim unwanted video clips
 START_PT = 'Blue'
@@ -28,18 +30,18 @@ def process_timeline(timeline):
     for timelineItem in timelineItems:
         markers = timelineItem.GetMarkers()
         sorted_frames = sorted(markers.keys())
-        in_file = ROOT_MEDIA_FOLDER + '\\' + timelineItem.GetName()
+        in_file = CONFIG[ROOT_MEDIA_FOLDER] + '\\' + timelineItem.GetName()
 
         start = 0
         end = 0
 
-        print ('sorted_frames: ', sorted_frames)
-        print ('GetDuration(): ', timelineItem.GetDuration())
-        print ('timelineItem.GetName(): ', timelineItem.GetName())
+        logging.debug('sorted_frames: ' + " ".join([str(x) for x in sorted_frames]))
+        logging.debug('GetDuration(): ' + str(timelineItem.GetDuration()))
+        logging.debug('timelineItem.GetName(): ' + timelineItem.GetName())
         
         for frame in sorted_frames:
-            print ("    Working on frame: ", frame)
-            print ("    markers[frame]: ", markers[frame])
+            logging.debug("    Working on frame: " + str(frame))
+            logging.debug("    markers[frame]: " + json.dumps(markers[frame]))
             if markers[frame]['color'] == START_PT:
                 start = frame
             elif markers[frame]['color'] == END_PLAYER1_PT or markers[frame]['color'] == END_PLAYER2_PT:
@@ -89,7 +91,7 @@ def update_scoreboard(clipNo):
     draw.text((10, 40), get_set_score(PLAYER2), anchor="lm", font=sb_font)
     draw.text((340, 40), get_game_score(PLAYER2), anchor="rm", font=sb_font)
 
-    clear.save(ROOT_MEDIA_FOLDER + '\\score_pt_' + to_alpha_index(clipNo) + '.jpg')
+    clear.save(CONFIG[ROOT_MEDIA_FOLDER] + '\\score_pt_' + to_alpha_index(clipNo) + '.jpg')
 
 def get_set_score(player):
     score = PLAYERS[player] + " "
@@ -103,27 +105,27 @@ def get_game_score(player):
     return score
 
 def update_score(markerValue):
-    print (tennisScore.get_match_score())
-    print ('  ', markerValue)
+    logging.debug(tennisScore.get_match_score())
+    logging.debug("  " + str(markerValue))
 
     if markerValue['color'] == END_PLAYER1_PT:
-        print ('My point')
+        logging.debug('My point')
         tennisScore.update_game_score(PLAYER1, PLAYER2)
     elif markerValue['color'] == END_PLAYER2_PT:
-        print ('His point')
+        logging.debug('His point')
         tennisScore.update_game_score(PLAYER2, PLAYER1)
 
 def create_clip(in_file, start, end, clipNo, subClip=""):
-    print ("create_clip start/FPS: " , start/FPS, " end/FPS: ", end/FPS)
+    logging.debug("create_clip start/FPS: "  + str(start/FPS) + " end/FPS: " + str(end/FPS))
 
-    # videoFile = ROOT_MEDIA_FOLDER + "\\clip_" + to_alpha_index(clipNo) + subClip + '.mp4'
-    tempVideo = ROOT_MEDIA_FOLDER + "\\temp.mp4"
-    videoFile = ROOT_MEDIA_FOLDER + "\\temp_" + to_alpha_index(clipNo) + subClip + '.mp4'
-    tempAudio = ROOT_MEDIA_FOLDER + "\\tempAudio.mp4"
+    # videoFile = CONFIG[ROOT_MEDIA_FOLDER] + "\\clip_" + to_alpha_index(clipNo) + subClip + '.mp4'
+    tempVideo = CONFIG[ROOT_MEDIA_FOLDER] + "\\temp.mp4"
+    videoFile = CONFIG[ROOT_MEDIA_FOLDER] + "\\temp_" + to_alpha_index(clipNo) + subClip + '.mp4'
+    tempAudio = CONFIG[ROOT_MEDIA_FOLDER] + "\\tempAudio.mp4"
 
     # clip = VideoFileClip(tempVideo, audio_fps=AUDIO_FPS)
     clip = VideoFileClip(in_file, audio_fps=AUDIO_FPS).subclip(start/FPS, end/FPS)
-    scoreboard = mp.ImageClip(ROOT_MEDIA_FOLDER + "\\score_pt_" + to_alpha_index(clipNo) + '.jpg')\
+    scoreboard = mp.ImageClip(CONFIG[ROOT_MEDIA_FOLDER] + "\\score_pt_" + to_alpha_index(clipNo) + '.jpg')\
             .set_duration(clip.duration)\
             .set_pos((10,20))\
             .set_opacity(0.80)
