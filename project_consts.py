@@ -6,14 +6,14 @@ GAME_TYPES = ("Standard", "Tiebreak")
 
 # Update per match
 CONFIG = {
-    'BASE_DAVINCI_PATH' : "C:\\Users\\fluuc\\AppData\\Roaming\\Blackmagic Design\\DaVinci Resolve\\Support\\Fusion\\Scripts\\Comp\\",
-    'GAME_TYPE' : 'Standard',
-    'ROOT_MEDIA_FOLDER' : "E:\\Felix\\Pictures\\GoPro\\2022-07-22-JamesChan"
+    BASE_DAVINCI_PATH : "C:\\Users\\fluuc\\AppData\\Roaming\\Blackmagic Design\\DaVinci Resolve\\Support\\Fusion\\Scripts\\Comp\\",
+    GAME_TYPE : 'Standard',
+    ROOT_MEDIA_FOLDER : "E:\\Felix\\Pictures\\GoPro\\2022-07-22-JamesChan"
 
 }
-BASE_SCOREBOARD = CONFIG['BASE_DAVINCI_PATH'] + "ScoreBoard.jpg"
-ERBOS_DRACO     = CONFIG['BASE_DAVINCI_PATH'] + "fonts\\erbos-draco-monospaced-nbp-font\\ErbosDraco1StOpenNbpRegular-l5wX.ttf"
-SELF_DESTRUCT   = CONFIG['BASE_DAVINCI_PATH'] + "fonts\\self-destruct-button-bb-font\\SelfdestructbuttonbbBold-0gKR.otf" 
+BASE_SCOREBOARD = CONFIG[BASE_DAVINCI_PATH] + "ScoreBoard.jpg"
+ERBOS_DRACO     = CONFIG[BASE_DAVINCI_PATH] + "fonts\\erbos-draco-monospaced-nbp-font\\ErbosDraco1StOpenNbpRegular-l5wX.ttf"
+SELF_DESTRUCT   = CONFIG[BASE_DAVINCI_PATH] + "fonts\\self-destruct-button-bb-font\\SelfdestructbuttonbbBold-0gKR.otf" 
 
 FPS = 59.940
 AUDIO_FPS = 48000

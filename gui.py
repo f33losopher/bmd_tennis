@@ -16,8 +16,8 @@ logging.basicConfig(level=logging.INFO)
 def processVideos():
     logging.info('Processing videos with settings...')
     logging.info('BASE_DAVINCI_PATH: ' + CONFIG[BASE_DAVINCI_PATH])
-    logging.info('GAME_TYPE: ' + CONFIG[GAME_TYPE])
     logging.info('Video Files: ' + CONFIG[ROOT_MEDIA_FOLDER])
+    logging.info('GAME_TYPE: ' + CONFIG[GAME_TYPE])
     logging.info('Player(s) 1: ' + PLAYERS[PLAYER1])
     logging.info('Player(s) 2: ' + PLAYERS[PLAYER2])
 
@@ -48,6 +48,11 @@ def setBasePath(sv):
 def setVidPath(sv):
     CONFIG[ROOT_MEDIA_FOLDER] = sv.get()
 
+def setGameType(event):
+    selected_index = lbGameType.curselection()[0]
+    CONFIG[GAME_TYPE] = GAME_TYPES[selected_index]
+
+
 # Creating initial layout
 curRow = 0
 
@@ -70,6 +75,7 @@ list_items = StringVar(value=GAME_TYPES)
 lbGameType = Listbox(win, listvariable=list_items, height=2)
 lbGameType.selection_set(0)
 lbGameType.grid(row=curRow, column=1)
+lbGameType.bind('<<ListboxSelect>>', setGameType)
 curRow += 1
 
 Label(win, text='Player(s) 1').grid(row=curRow, sticky='w')
