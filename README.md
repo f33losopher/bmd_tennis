@@ -1,12 +1,24 @@
 # bmd_tennis
 Black Magic Design API Scripting for Tennis Videos
 
-In Davinci resolve set the color shortcuts
+Best BMD API: https://diop.github.io/davinci-resolve-api/#/
+
+# Environment Setup
+
+In Davinci Resolve the marker colors represent
+- Start of Point= 'Blue'
+- Player 1 wins point = 'Cyan'
+- Player 2 wins point = 'Green'
+- Continue Clip = 'Yellow'
+
+Continue clip is used when a point crosses a video clip boundary. Use the Blue marker as usual, end the clip with Yellow, and then in the next clip mark the winning point as normal
+
+I set the following shortcuts in Davinci Resolve
 - Davinci Resolve -> Keyboard Preferences -> Mark
-- START_PT = 'Blue'
-- END_PLAYER1_PT = 'Cyan'
-- END_PLAYER2_PT = 'Green'
-- CONTINUE_END = 'Yellow'
+- m => 'Blue'
+- 1 => 'Cyan'
+- 2 => 'Green'
+- 3 => 'Yellow'
 
 Clone to: C:\Users\<USER>\AppData\Roaming\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Comp
 
@@ -20,5 +32,5 @@ In Python command prompt download ffmpeg
 >>> import imageio
 >>> imageio.plugins.ffmpeg.download()
 
-Update project_consts.py for paths to scoreboard, fonts, media root, etc...
+# Run Program
 
