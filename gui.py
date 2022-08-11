@@ -11,7 +11,7 @@ import logging
 win = Tkinter.Tk()
 win.geometry('600x800')
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 def processVideos():
     logging.info('Processing videos with settings...')

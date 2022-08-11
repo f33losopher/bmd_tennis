@@ -8,7 +8,7 @@ GAME_TYPES = ("Standard", "Tiebreak")
 CONFIG = {
     BASE_DAVINCI_PATH : "C:\\Users\\fluuc\\AppData\\Roaming\\Blackmagic Design\\DaVinci Resolve\\Support\\Fusion\\Scripts\\Comp\\",
     GAME_TYPE : 'Standard',
-    ROOT_MEDIA_FOLDER : "E:\\Felix\\Pictures\\GoPro\\2022-07-22-JamesChan"
+    ROOT_MEDIA_FOLDER : "C:\\Users\\fluuc\\Videos\\2022-08-09-Khang2"
 
 }
 BASE_SCOREBOARD = CONFIG[BASE_DAVINCI_PATH] + "ScoreBoard.jpg"
@@ -22,18 +22,18 @@ PLAYER1 = 'Player1'
 PLAYER2 = 'Player2'
 PLAYERS = {
     PLAYER1: 'Felix ',
-    PLAYER2: 'James '
+    PLAYER2: 'Khang '
 }
 
 # To initialize a score before the video starts
 # Comment out if want to start from 0-0
-# init_score = {
-#     'match': {
-#         'Player1': [6,0],
-#         'Player2': [1,0]
-#     },
-#     'game': {
-#         'Player1': 0,
-#         'Player2': 0
-#     }
-# }
+init_score = {
+    'match': {
+        'Player1': [4,0],
+        'Player2': [6,0]
+    },
+    'game': {
+        'Player1': 0,
+        'Player2': 0
+    }
+}

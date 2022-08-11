@@ -61,6 +61,7 @@ def process_timeline(timeline):
                 update_score(markers[frame])
                 update_scoreboard(clipNo)
             elif markers[frame]['color'] == CONTINUE_END:
+                logging.debug("    Continue Clip, using timelineItem.GetDuration(): " + str(timelineItem.GetDuration()))
                 create_clip(in_file, start, timelineItem.GetDuration(), clipNo)
                 continue_clip = True
 
