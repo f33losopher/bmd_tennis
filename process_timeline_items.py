@@ -81,7 +81,7 @@ def to_alpha_index(num):
     return "".join(rtn)
 
 def update_scoreboard(clipNo):
-    sb_font = ImageFont.truetype(ERBOS_DRACO, 25)
+    sb_font = ImageFont.truetype(DRAFT, 25)
     img = Image.open(BASE_SCOREBOARD)
     clear = img.copy()
     draw = ImageDraw.Draw(clear)
